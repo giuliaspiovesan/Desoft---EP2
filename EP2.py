@@ -24,3 +24,16 @@ def faz_jogada(tabuleiro, linha, coluna):
     else:
         tabuleiro[linha][coluna] = '-'
     return tabuleiro
+
+#Posiciona frota:
+def posiciona_frota(dicio_frota):
+    grade = [0]*10 #igual ModSim
+    for i in range(len(grade)):
+        grade[i] = [0]*10
+    for direcao in dicio_frota.values():
+        for a in direcao:
+            for i in a:
+                linha = i[0]
+                coluna = i[1]
+                grade[linha][coluna] = 1
+    return grade
