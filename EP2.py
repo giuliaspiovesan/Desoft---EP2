@@ -37,3 +37,21 @@ def posiciona_frota(dicio_frota):
                 coluna = i[1]
                 grade[linha][coluna] = 1
     return grade
+
+#Quantas embarcações afundadas?
+def afundados(dicio_frota, tabuleiro):
+    num_afundados = 0
+    afundou = False
+    for direcao in dicio_frota.values():
+        for i in direcao:
+            for b in i:
+                linha = b[0]
+                coluna = b[1]
+                if tabuleiro[linha][coluna] == 'X':
+                    afundou = True
+                else:
+                    afundou = False
+                    break
+            if afundou == True:
+                num_afundados += 1
+    return num_afundados
