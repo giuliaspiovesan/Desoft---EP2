@@ -55,3 +55,16 @@ def afundados(dicio_frota, tabuleiro):
             if afundou == True:
                 num_afundados += 1
     return num_afundados
+
+def posicao_valida(dicio_navios,linha,coluna,orientacao,tamanho):
+    navio = define_posicoes(linha,coluna,orientacao,tamanho)
+    for n in navio:
+        if n[0] < 0 or n[1]<0 or n[0]>9 or n[1]>9:
+            return False
+        for i in dicio_navios.values():
+            for j in range(len(i)):
+                if n in i[j]:
+                    return False
+    if dicio_navios == {}:
+        return True
+    return True
