@@ -10,11 +10,11 @@ def define_posicoes(linha, coluna, orientacao, tamanho):
     return posicoes          
 
 #Preenche frota:
-def preenche_frota(dicio_frota, nome_navio, linha_navio, coluna_navio, orientacao_navio, tamanho_navio):
+def preenche_frota(dicio_frota, nome_navio, linha, coluna, orientacao, tamanho):
     if nome_navio not in dicio_frota:
-        dicio_frota[nome_navio] = [define_posicoes(linha_navio, coluna_navio, orientacao_navio, tamanho_navio)]
+        dicio_frota[nome_navio] = [define_posicoes(linha, coluna, orientacao, tamanho)]
     else:
-        dicio_frota[nome_navio].append(define_posicoes(linha_navio, coluna_navio, orientacao_navio, tamanho_navio))
+        dicio_frota[nome_navio].append(define_posicoes(linha, coluna, orientacao, tamanho))
     return dicio_frota
 
 #Faz jogada:
@@ -27,7 +27,7 @@ def faz_jogada(tabuleiro, linha, coluna):
 
 #Posiciona frota:
 def posiciona_frota(dicio_frota):
-    grade = [0]*10 #igual ModSim
+    grade = [0]*10 
     for i in range(len(grade)):
         grade[i] = [0]*10
     for direcao in dicio_frota.values():
@@ -56,6 +56,7 @@ def afundados(dicio_frota, tabuleiro):
                 num_afundados += 1
     return num_afundados
 
+#Posição válida
 def posicao_valida(dicio_navios,linha,coluna,orientacao,tamanho):
     navio = define_posicoes(linha,coluna,orientacao,tamanho)
     for n in navio:
@@ -68,3 +69,78 @@ def posicao_valida(dicio_navios,linha,coluna,orientacao,tamanho):
     if dicio_navios == {}:
         return True
     return True
+
+#Posicionando frota:
+dicio_frota = {
+    "porta-aviões":[],
+    "navio-tanque":[],
+    "contratorpedeiro":[],
+    "submarino": [],
+}
+
+dicio_embarcacoes = {'porta-aviões': [1, 4], 'navio-tanque': [2, 3], 'contratorpedeiro': [3, 2], 'submarino': [4, 1]}
+
+for embarcacao, qtde in dicio_embarcacoes.items():
+    
+    for i in range(0, qtde[0]):
+        print(f'Insira as informações referentes ao navio {embarcacao} que possui tamanho {qtde[1]}')
+
+        linha = int(input('Linha: '))
+        coluna = int(input('Coluna: '))
+
+        if embarcacao != 'submarino':
+            orientacao = int(input('[1] Vertical [2] Horizontal > '))
+
+            if orientacao == 1:
+                orientacao = 'vertical'
+            if orientacao == 2:
+                orientacao = 'horizontal'
+
+            if posicao_valida(dicio_frota, linha,coluna,orientacao,qtde[1]) == False:
+                while posicao_valida(dicio_frota, linha, coluna, orientacao, qtde[1]) == False:
+
+                    print('Esta posição não está válida!')
+                    print(f'Insira as informações referentes ao navio {embarcacao} que possui tamanho {qtde[1]}')
+
+                    linha = int(input('Linha: '))
+                    coluna = int(input('Coluna: '))
+
+                    if embarcacao != 'submarino':
+                        orientacao = int(input('[1] Vertical [2] Horizontal > '))
+
+                        if orientacao == 1:
+                            orientacao = 'vertical'
+                        if orientacao == 2:
+                            orientacao = 'horizontal'
+                
+                frota = preenche_frota(dicio_frota, embarcacao, linha, coluna, orientacao, qtde[1])
+            
+            else:
+                frota = preenche_frota(dicio_frota, embarcacao, linha, coluna, orientacao, qtde[1])
+
+        else:
+            orientacao = 'horizontal'
+
+            if posicao_valida(dicio_frota, linha, coluna, orientacao, qtde[1]) == False:
+                while posicao_valida(dicio_frota, linha, coluna, orientacao, qtde[1]) == False:
+
+                    print('Esta posição não está válida!')
+                    print(f'Insira as informações referentes ao navio {embarcacao} que possui tamanho {qtde[1]}')
+
+                    linha = int(input('Linha: '))
+                    coluna = int(input('Coluna: '))
+
+                    if embarcacao != 'submarino':
+                        orientacao = int(input('[1] Vertical [2] Horizontal > '))
+
+                        if orientacao == 1:
+                            orientacao = 'vertical'
+                        if orientacao == 2:
+                            orientacao = 'horizontal'
+
+                frota = preenche_frota(dicio_frota, embarcacao, linha, coluna, orientacao, qtde[1])
+                
+            else:
+                frota = preenche_frota(dicio_frota, embarcacao, linha, coluna, orientacao, qtde[1])
+
+print(dicio_frota)
