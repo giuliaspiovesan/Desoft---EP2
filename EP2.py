@@ -1,3 +1,5 @@
+import random
+random.seed(2)
 #Define posições:
 def define_posicoes(linha, coluna, orientacao, tamanho):
     posicoes = []
@@ -210,4 +212,18 @@ while jogando == True:
     barcos_afundados = afundados(frota_oponente, grade_oponente)
     if barcos_afundados == 10:
         jogando = False
-        print('Parabéns! Você derrubou todos os navios do seu oponente!')
+        print('Parabéns! Você derrubou todos os navios do seu oponente! ;)')
+    else:
+            segunda_jogada = True
+            while segunda_jogada:
+                linha1 = random.randint(0, 9)
+                coluna2 = random.randint(0, 9)
+                ataque_oponente = [linha1, coluna2]
+                if ataque_oponente not in primeiro_ataque_opon:
+                    print(f'Seu oponente está atacando na linha {linha1} e coluna {coluna2}')
+                    primeiro_ataque_opon.append(ataque_oponente)
+                    grade_frota = faz_jogada(grade_frota, linha1, coluna2)
+                    segunda_jogada = False
+            if afundados(frota, grade_frota) == 10:
+                jogando = False
+                print('Opa! O oponente derrubou toda a sua frota! :( ')
