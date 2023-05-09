@@ -142,5 +142,72 @@ for embarcacao, qtde in dicio_embarcacoes.items():
                 
             else:
                 frota = preenche_frota(dicio_frota, embarcacao, linha, coluna, orientacao, qtde[1])
+    print(dicio_frota)
+# Jogadas do jogador 
+frota_oponente = {
+    'porta-aviões': [
+        [[9, 1], [9, 2], [9, 3], [9, 4]]
+    ],
+    'navio-tanque': [
+        [[6, 0], [6, 1], [6, 2]],
+        [[4, 3], [5, 3], [6, 3]]
+    ],
+    'contratorpedeiro': [
+        [[1, 6], [1, 7]],
+        [[0, 5], [1, 5]],
+        [[3, 6], [3, 7]]
+    ],
+    'submarino': [
+        [[2, 7]],
+        [[0, 6]],
+        [[9, 7]],
+        [[7, 6]]
+    ]
+}
+tabuleiro_oponente = posiciona_frota(frota_oponente)
 
-print(dicio_frota)
+def monta_tabuleiros(tabuleiro_jogador,  tabuleiro_oponente):
+    texto = ''
+    texto += '   0  1  2  3  4  5  6  7  8  9         0  1  2  3  4  5  6  7  8  9\n'
+    texto += '___________      ___________\n'
+
+    for linha in range(len(tabuleiro_jogador)):
+        info_jogador = '  '.join([str(item) for item in tabuleiro_jogador[linha]])
+        info_oponente = '  '.join([info if str(info) in 'X-' else '0' for info in tabuleiro_oponente[linha]])
+        texto += f'{linha}| {info_jogador}|     {linha}| {info_oponente}|\n'
+    return texto
+grade_frota = posiciona_frota(frota)
+grade_oponente = posiciona_frota(frota_oponente)
+primeiro_ataque_jog = []
+primeiro_ataque_opon = []
+jogando = True
+while jogando == True:
+    grade = monta_tabuleiros(grade_frota, grade_oponente)
+    print(grade)
+    repete = True
+    while repete == True:
+        linha = True
+        coluna = True
+        while linha == True:
+            linha_do_ataque = int(input('Jogador, qual linha deseja atacar?'))
+            if linha_do_ataque < 0 or linha_do_ataque > 9:
+                print('Linha inválida')
+            else:
+                linha = False
+        while coluna == True:
+            coluna_do_ataque = int(input('Jogador, qual coluna deseja atacar?'))
+            if coluna_do_ataque < 0 or coluna_do_ataque > 9:
+                print('Coluna inválida!')
+            else:
+                coluna = False
+        novo_ataque = [linha_do_ataque, coluna_do_ataque]
+        if novo_ataque in primeiro_ataque_jog:
+            print(f'A posição linha {linha_do_ataque} e coluna {coluna_do_ataque} já foi informada anteriormente')
+        else:
+            repete = False
+    primeiro_ataque_jog.append(novo_ataque)
+    grade_oponente = faz_jogada(grade_oponente, linha_do_ataque, coluna_do_ataque)
+    barcos_afundados = afundados(frota_oponente, grade_oponente)
+    if barcos_afundados == 10:
+        jogando = False
+        print('Parabéns! Você derrubou todos os navios do seu oponente!')
