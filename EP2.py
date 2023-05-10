@@ -213,6 +213,7 @@ while jogando == True:
     if barcos_afundados == 10:
         jogando = False
         print('Parabéns! Você derrubou todos os navios do seu oponente! ;)')
+    #Jogadas oponente:
     else:
             segunda_jogada = True
             while segunda_jogada:
